@@ -13,8 +13,8 @@ puts "Введите третье число"
     puts "Дискриминант равен: #{D} и имеет корни #{root1} и #{root2}"
   elsif D < 0
     puts "Дискриминант равен: #{D} и не имеет корней"
-  else 
+  elsif D==0
     C = Math.sqrt(D.to_i)
-    root3 = (–b.to_i + C.to_i)/(2*a.to_i)
+    root3 = (-b.to_i + C.to_i)/(2*a.to_i)
     puts "Дискриминант равен: #{D} и имеет 2 одиннаковых корня #{root3}"
   end
