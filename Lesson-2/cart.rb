@@ -1,8 +1,6 @@
 cart = {}
-cart2 = {}
 final_price = 0
-final_price_final = 0
-puts "Чтобы остановить ввод названия, цен и колличества товаров напишите <<стоп>> или <<stop>> "
+puts "Чтобы остановить ввод названия, цен и колличества товаров напишите <<stop>> на вводе названия"
 loop do
   puts "Введите навание товара"
   product = gets.chomp
@@ -12,12 +10,11 @@ loop do
   puts "Введите колличество товара"
   volume = gets.chomp.to_f
   cart[product] = { price: price, volume: volume }
-  cart2[product] = { _общая_цена_этого_товара: price*volume }
 end
 puts "Корзина: #{cart}"
-puts "Цена за полное количество каждого товара: #{cart2}"
 cart.each do |name, quantity|
-  final_price = quantity[:price] * quantity[:volume]
-  final_price_final += final_price
+  sum = quantity[:price] * quantity[:volume]
+  puts "Цена за товар: #{name} - #{sum}"
+  final_price += sum 
 end
-puts "Цена за весь товар:#{final_price_final}"
+puts "Цена за весь товар: #{final_price}"  
