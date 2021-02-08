@@ -1,5 +1,4 @@
 class Train
-
   attr_reader :number, :type, :size, :speed, :current_station, :route
 
   def initialize(number, type, size, speed = 0) 
