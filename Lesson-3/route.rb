@@ -2,7 +2,7 @@ class Route
   attr_accessor :first_station, :last_station, :intermediate_stations
 
   def initialize(first_station, last_station)
-    $first_station = first_station
+    @first_station = first_station
     @last_station = last_station
     @intermediate_stations = []
   end
@@ -16,6 +16,6 @@ class Route
   end
 
   def station_list
-    [$first_station] + @intermediate_stations + [@last_station]
+    [@first_station] + @intermediate_stations + [@last_station]
   end
 end
