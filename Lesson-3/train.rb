@@ -6,7 +6,7 @@ class Train
     @type = type
     @number_of_cars = number_of_cars
     @speed = speed
-    current_station_index = 0
+    @current_station_index = 0
   end
 
   def add_speed
@@ -31,17 +31,17 @@ class Train
 
   def add_route(route)
     @route = route
-    current_station.add_train(self)
+    @current_station = route.first_station
   end
 
   def next_station
-    return if @current_station == first_station
+    return if @current_station != route.first_station
     current_station_index = route.station_list.index(@current_station)
     @current_station = route.station_list[current_station_index + 1]
   end
 
   def prev_station
-    return if @current_station != first_station
+    return if @current_station == first_station
     current_station_index = route.station_list.index(@current_station)
     @current_station = route.station_list[current_station_index - 1]
   end
