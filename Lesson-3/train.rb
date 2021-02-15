@@ -35,15 +35,13 @@ class Train
   end
 
   def next_station
-    return if @current_station != route.first_station
+    return if @current_station == route.last_station
     current_station_index = route.station_list.index(@current_station)
-    @current_station = route.station_list[current_station_index + 1]
   end
 
   def prev_station
-    return if @current_station == first_station
+    return if @current_station != route.first_station
     current_station_index = route.station_list.index(@current_station)
-    @current_station = route.station_list[current_station_index - 1]
   end
 
   def move_to_next
@@ -66,5 +64,9 @@ class Train
       current_station_index -=1
       current_station.add_train(self)
     end
+  end
+
+  def current_station
+    @route.station_list[@current_station_index]
   end
 end
