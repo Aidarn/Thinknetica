@@ -17,6 +17,6 @@ class Route
   end
 
   def station_list
-    @stations = [@first_station] + @intermediate_stations + [@last_station]
+    [@first_station] + @intermediate_stations + [@last_station]
   end
 end
