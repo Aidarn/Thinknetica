@@ -35,11 +35,11 @@ class Train
   end
 
   def next_station
-    @route.station_list[@current_station_index + 1] if @current_station != @route.last_station
+    @route.station_list[@current_station_index + 1]
   end
 
   def prev_station
-    @route.station_list[@current_station_index - 1] if @current_station != @route.first_station
+    @route.station_list[@current_station_index - 1]
   end
 
   def current_station
@@ -47,20 +47,20 @@ class Train
   end
 
   def move_to_next
-    unless next_station
+    if @current_station == @route.last_station
       puts "Вы находитесь на последней станции"
       return
     else
-      current_station = route.station_list[@current_station_index + 1]
+      @current_station = route.station_list[@current_station_index += 1]
     end
   end
 
   def move_to_back
-    unless prev_station
+    if @current_station == @route.first_station
       puts "Вы на начальной станции"
       return
     else
-      current_station = route.station_list[@current_station_index - 1]
+      @current_station = route.station_list[@current_station_index -= 1]
     end
   end
 end
