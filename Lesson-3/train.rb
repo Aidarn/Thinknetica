@@ -51,9 +51,7 @@ class Train
       puts "Вы находитесь на последней станции"
       return
     else
-      current_station.delete_train(self)
-      @current_station_index += 1
-      current_station.add_train(self)
+      current_station = route.station_list[@current_station_index + 1]
     end
   end
 
@@ -62,9 +60,7 @@ class Train
       puts "Вы на начальной станции"
       return
     else
-      current_station.delete_train(self)
-      @current_station_index -=1
-      current_station.add_train(self)
+      current_station = route.station_list[@current_station_index - 1]
     end
   end
 end
