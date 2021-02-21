@@ -49,7 +49,6 @@ class Train
   def move_to_next
     if @current_station == @route.last_station
       puts "Вы находитесь на последней станции"
-      return
     else
       @current_station = route.station_list[@current_station_index += 1]
     end
@@ -58,7 +57,6 @@ class Train
   def move_to_back
     if @current_station == @route.first_station
       puts "Вы на начальной станции"
-      return
     else
       @current_station = route.station_list[@current_station_index -= 1]
     end
