@@ -4,7 +4,7 @@ class Train
   def initialize(number, type, number_of_cars, speed = 0) 
     @number = number
     @type = type
-    @number_of_cars = number_of_cars
+    @wagons_list = []
     @speed = speed
     @current_station_index = 0
   end
@@ -21,12 +21,12 @@ class Train
     @speed = 0
   end
 
-  def add_number_of_cars
-    number_of_cars +=1 if speed == 0
+  def add_wagon(wagon)
+    wagons_list <<  if speed == 0 && wagon.TYPE = TYPE
   end
 
-  def remove_number_of_cars
-    number_of_cars -=1 if speed == 0 && number_of_cars > 0
+  def remove_wagon(wagon)
+    wagons_list.pop if speed == 0 && wagon.TYPE = TYPE
   end
 
   def add_route(route)
