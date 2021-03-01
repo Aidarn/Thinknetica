@@ -22,11 +22,11 @@ class Train
   end
 
   def add_wagon(wagon)
-    wagons_list <<  if speed == 0 && wagon.TYPE = TYPE
+    wagons_list <<  if (speed == 0 )&& (wagon.type == type)
   end
 
   def remove_wagon(wagon)
-    wagons_list.pop if speed == 0 && wagon.TYPE = TYPE
+    wagons_list.pop if (speed == 0) && (wagon.type == type)
   end
 
   def add_route(route)
@@ -61,4 +61,5 @@ class Train
       @current_station = route.station_list[@current_station_index -= 1]
     end
   end
+end
 end
