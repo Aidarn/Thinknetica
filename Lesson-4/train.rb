@@ -22,7 +22,7 @@ class Train
   end
 
   def add_wagon(wagon)
-    wagons_list <<  if (speed == 0 )&& (wagon.type == type)
+    wagons_list <<  if (speed == 0 ) && (wagon.type == type)
   end
 
   def remove_wagon(wagon)
