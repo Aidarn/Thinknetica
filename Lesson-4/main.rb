@@ -21,6 +21,7 @@ class Menu
   Что вы хотите сделать?
   _________________________________
   1-Создать поезд, маршрут, станцию
+  2-Произвести операции с поездами
   here
 
   CREATE = <<~here
@@ -30,6 +31,13 @@ class Menu
   3-Создать Станцию
   here
 
+  TRAINS_MENU = <<~here
+  _____________________
+  1-Назначить маршрут поезду
+  2-Операции с вагонами
+  3-Переместить поезд по маршруту
+  here
+  
   def run
     puts MENU
     action = gets.chomp.to_i
@@ -37,8 +45,11 @@ class Menu
   end
   
   def selected_action(action)
-    if action == 1
+    case action
+    when 1
       what_create(action)
+    when 2
+      trains_operation(action)
     end
   end
 
@@ -54,6 +65,17 @@ class Menu
       create_station
     end
   end
+
+  def trains_operation(action)
+    case action
+    when 1
+      assign_route
+    when 2
+      wagons_operations
+    when 3
+      trains_move
+    end
+  end 
 
   def create_train
     puts "Введите номер поезда"
@@ -71,13 +93,16 @@ class Menu
     stations << station = Station.new(station_name)
     run    
   end
-  #- Создавать маршруты и управлять станциями в нем (добавлять, удалять)
+  
   def create_route
     puts "Список станций:"
-    stations.each_with_index {|index, station| puts "Номер: #{station}, Название: #{index.name}"}
-    puts "Введите номера начальной и конечной станции для создания маршрута"
-    routes <<
-    #Создать маршрут
+    stations.each_with_index {|station, index| puts "Номер: #{index}, Название: #{station.name}"}
+    puts "Введите номер начальной станции"
+    first_station = gets.chomp.to_i
+    puts "Введите номер последней станции"
+    last_station = gets.chomp.to_i
+    routes << Route.new(stations[first_station], stations[last_station])
+    routes.each_with_index {|route, index| puts "#{route.station_list.map{ |station| station.name }}"}
     run
   end
   #- Назначать маршрут поезду
