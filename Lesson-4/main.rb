@@ -15,6 +15,37 @@ class Menu
     @routes = []
     @stations = []
   end
+
+  def test
+    station_name = 0
+    while station_name != 10
+      stations.push station = Station.new(station_name)
+      station_name += 1
+    end
+    puts "Станции успешно созданы"
+    first_station = 0
+    last_station = 1
+    while first_station != 3
+      routes << Route.new(stations[first_station], stations[last_station])
+      first_station += 1
+      last_station += 3
+    end
+    puts "Маршруты успешно созданы"
+    route_number = 1
+    station_number = 3
+    routes[route_number].add_station(stations[station_number])
+    puts "Станция успешно добавлена"
+    train_name = 2
+    cargo = 1
+    passenger = 2
+    while train_name < 10
+      trains << CargoTrain.new(train_name) if cargo == 1
+      trains << PassengerTrain.new(train_name) if passenger == 2
+      train_name += 2
+    end
+    puts "Поезда успешно созданы"
+    run
+  end
   
   MENU = <<~here
   Что вы хотите сделать?
@@ -22,6 +53,7 @@ class Menu
   1-Создать поезд, маршрут, станцию
   2-Произвести операции с поездами
   3-Произвести операции с маршрутами
+  4-Загрузить всё
   here
 
   CREATE = <<~here
@@ -81,6 +113,7 @@ class Menu
     trains.each_with_index {|train, number| puts "Номер: #{number} Поезд: #{train.number} тип: #{train.type}"}
     train_number = gets.chomp.to_i
     puts TRAINS_MENU
+    action = gets.chomp.to_i
     case action
     when 1
       assign_route(train_number)
@@ -91,7 +124,13 @@ class Menu
     end
   end 
 
-  def assign_route
+  def assign_route(train_number)
+    puts "Список досупных маршрутов"
+    routes.each_with_index {|route, index| puts "Номер: #{index}, Маршрут: #{route.station_list.map{|station| station.name }}"}
+    puts "Выберите номер маршрута к которому хотите добаить поезд"
+    route_number = gets.chomp.to_i
+    trains[train_number].add_route(routes[route_number])
+    routes
   end
 
   def wagons_operations
