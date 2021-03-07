@@ -15,13 +15,14 @@ class Menu
     @routes = []
     @stations = []
   end
-
+  
   MENU = <<~here
-
   Что вы хотите сделать?
   _________________________________
   1-Создать поезд, маршрут, станцию
   2-Произвести операции с поездами
+  3-Произвести операции с маршрутами
+  4-Загрузить всё
   here
 
   CREATE = <<~here
@@ -37,7 +38,13 @@ class Menu
   2-Операции с вагонами
   3-Переместить поезд по маршруту
   here
-  
+
+  ROUTE_MENU = <<~here
+  _________________________________
+  1 - Добавить станцию в маршрут
+  2 - Удалить станцию из маршрута
+  here
+
   def run
     puts MENU
     action = gets.chomp.to_i
@@ -50,6 +57,10 @@ class Menu
       what_create(action)
     when 2
       trains_operation(action)
+    when 3 
+      route_operations
+    else 4
+      test
     end
   end
 
@@ -67,15 +78,42 @@ class Menu
   end
 
   def trains_operation(action)
+    puts "Выберите номер поезда с которым хотите произвести операцию"
+    trains.each_with_index {|train, number| puts "Номер: #{number} Поезд: #{train.number} тип: #{train.type}"}
+    train_number = gets.chomp.to_i
+    puts TRAINS_MENU
     case action
     when 1
-      assign_route
+      assign_route(train_number)
     when 2
       wagons_operations
     when 3
       trains_move
     end
   end 
+
+  def assign_route
+  end
+
+  def wagons_operations
+  end
+
+  def trans_move
+  end
+
+  def route_operations
+    puts "Выберите номер маршута с которым хотите провести операцию"
+    routes.each_with_index {|route, index| puts "Номер: #{index}, Маршрут: #{route.station_list.map{|station| station.name }}"}
+    route_number = gets.chomp.to_i
+    puts ROUTE_MENU
+    action = gets.chomp.to_i
+    case action
+    when 1
+      add_station_on_route(route_number)
+    when 2
+      delete_station_in_route(route_number)
+    end
+  end
 
   def create_train
     puts "Введите номер поезда"
@@ -103,6 +141,37 @@ class Menu
     last_station = gets.chomp.to_i
     routes << Route.new(stations[first_station], stations[last_station])
     routes.each_with_index {|route, index| puts "#{route.station_list.map{ |station| station.name }}"}
+    puts "Хотите провести еще какие либо действия с маршрутами"
+    puts "1 - Да"
+    puts "2 - Нет"
+    action = gets.chomp.to_i
+    case action
+    when 1 
+      route_operations
+    when 2
+      run
+    end
+  end
+
+  def add_station_on_route(route_number)
+    puts "Список станций:"
+    stations.each_with_index {|station, index| puts "Номер: #{index}, Название: #{station.name}"}
+    puts "Введите номер промежуточной станции"
+    station_number = gets.chomp.to_i
+    routes[route_number].add_station(stations[station_number])
+    puts "Станция успешно добавлена"
+    run
+  end
+
+  def delete_station_in_route(route_number)
+    puts "Список станций в маршруте:"
+    routes[route_number].station_list.each_with_index {|route, number| puts "Номер: #{number}, Название #{route.name}"}
+    puts "Выберите номер станции для удаления"
+    station_number = gets.chomp.to_i
+    station = routes[route_number].station_list[station_number]
+    routes[route_number].delete_station(station)
+    routes[route_number].station_list.each_with_index {|route, number| puts "Номер: #{number}, Название #{route.name}"}
+    puts "Станция успешно удалена"
     run
   end
   #- Назначать маршрут поезду
