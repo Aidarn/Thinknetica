@@ -14,11 +14,11 @@ class Station
     trains.delete(train)
   end
 
-  def cargo_trains(train)
-    trains.select { |train| train.type == :cargo }
+  def cargo_trains
+    trains.select { |train| train.type = :cargo }
   end
 
-  def passenger_trains(train)
-    trains.select { |train| train.type == :passenger }
+  def passenger_trains
+    trains.select { |train| train.type = :passenger }
   end
 end

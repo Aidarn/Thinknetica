@@ -1,5 +1,5 @@
 class Train
-  attr_reader :number, :type, :number_of_cars, :speed, :current_station, :route
+  attr_reader :number, :type, :number_of_cars, :speed, :current_station, :route, :wagons_list
 
   def initialize(number, type, speed = 0) 
     @number = number
@@ -22,24 +22,16 @@ class Train
   end
 
   def add_wagon(wagon)
-    wagons_list <<  if (speed == 0 ) && (wagon.type == type)
+    wagons_list << wagon if (speed == 0 ) && (wagon.type == type)
   end
 
-  def remove_wagon(wagon)
+  def remove_wagon
     wagons_list.pop if (speed == 0) && (wagon.type == type)
   end
 
   def add_route(route)
     @route = route
     @current_station = route.first_station
-  end
-
-  def next_station
-    @route.station_list[@current_station_index + 1]
-  end
-
-  def prev_station
-    @route.station_list[@current_station_index - 1]
   end
 
   def current_station
@@ -51,6 +43,7 @@ class Train
       puts "Вы находитесь на последней станции"
     else
       @current_station = route.station_list[@current_station_index += 1]
+      puts "Поезд перенесен на следующую станцию"
     end
   end
 
@@ -59,6 +52,7 @@ class Train
       puts "Вы на начальной станции"
     else
       @current_station = route.station_list[@current_station_index -= 1]
+      puts "Поезд перенесен на предыдущую станцию"
     end
   end
 end
