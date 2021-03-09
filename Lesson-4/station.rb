@@ -15,10 +15,10 @@ class Station
   end
 
   def cargo_trains
-    trains.select { |train| train.type = :cargo }
+    trains.select { |train| train.type == :cargo }
   end
 
   def passenger_trains
-    trains.select { |train| train.type = :passenger }
+    trains.select { |train| train.type == :passenger }
   end
 end

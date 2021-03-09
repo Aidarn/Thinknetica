@@ -31,7 +31,8 @@ class Train
 
   def add_route(route)
     @route = route
-    @current_station = route.first_station
+    @current_station = 0
+    current_station.add_train(self)
   end
 
   def current_station
@@ -42,7 +43,9 @@ class Train
     if @current_station == @route.last_station
       puts "Вы находитесь на последней станции"
     else
-      @current_station = route.station_list[@current_station_index += 1]
+      current_station.delete_train(self)
+      @current_station_index += 1
+      current_station.add_train(self)
       puts "Поезд перенесен на следующую станцию"
     end
   end
