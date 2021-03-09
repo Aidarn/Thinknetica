@@ -1,6 +1,12 @@
 class Train
   attr_reader :number, :type, :number_of_cars, :speed, :current_station, :route, :wagons_list
 
+  private
+
+  attr_writer :wagon_list, :current_station, :speed, :route
+
+  public
+
   def initialize(number, type, speed = 0) 
     @number = number
     @type = type
@@ -21,11 +27,15 @@ class Train
     @speed = 0
   end
 
+  def current_station
+    @route.station_list[@current_station_index]
+  end
+
   def add_wagon(wagon)
     wagons_list << wagon if (speed == 0 ) && (wagon.type == type)
   end
 
-  def remove_wagon
+  def remove_wagon(wagon)
     wagons_list.pop if (speed == 0) && (wagon.type == type)
   end
 
@@ -33,10 +43,6 @@ class Train
     @route = route
     @current_station = 0
     current_station.add_train(self)
-  end
-
-  def current_station
-    @route.station_list[@current_station_index]
   end
 
   def move_to_next

@@ -20,7 +20,7 @@ class Menu
   
   def run
     loop do
-      if @stop == 2
+      if @stop == 0
         puts "Программа завершена"
         break
       else
@@ -30,6 +30,8 @@ class Menu
       end
     end
   end
+
+  private
   
   def what_create(action)
     puts CREATE
@@ -102,8 +104,8 @@ class Menu
     train_name = gets.chomp
     puts "Выберите тип поезда: 1-cargo, 2-passenger"
     train_type = gets.chomp.to_i
-    trains << CargoTrain.new(train_name) if train_type == 1
-    trains << PassengerTrain.new(train_name) if train_name == 2
+    trains.push CargoTrain.new(train_name) if train_type == 1
+    trains.push PassengerTrain.new(train_name) if train_type == 2
   end
 
   def create_station
@@ -149,7 +151,9 @@ class Menu
   end
 
   def remove_wagon_to_train(train_number)
-    trains[train_number].remove_wagon
+    wagon = CargoWagon.new(CargoWagon::TYPE) if trains[train_number].type == :cargo
+    wagon = PassengerWagon.new(PassengerWagon::TYPE) if trains[train_number].type == :passenger
+    trains[train_number].remove_wagon(wagon)
     puts DELETE
   end
 
@@ -184,8 +188,8 @@ class Menu
   def show_the_list_of_trains_at_the_station
     stations.each_with_index do |station, index|
       puts "Назвние станции: #{station.name}"
-      puts "Список грузовых поездов на станции #{station.cargo_trains}" if !station.cargo_trains.empty?
-      puts "Список пассажирских поездов на станции #{station.passenger_trains}" if !station.passenger_trains.empty?
+      puts "Список грузовых поездов на станции #{station.cargo_trains.map {|train| train.number}}" if !station.cargo_trains.empty?
+      puts "Список пассажирских поездов на станции #{station.passenger_trains.map {|train| train.number}}" if !station.passenger_trains.empty?
     end
   end
 
