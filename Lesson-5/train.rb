@@ -8,8 +8,14 @@ class Train
 
   public
 
+  @@number = []
+
+  def self.find(num)
+  end
+
   def initialize(number, type) 
     @number = number
+    @@number << self.number
     @type = type
     @wagons_list = []
     @speed = 0
