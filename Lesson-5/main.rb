@@ -204,7 +204,7 @@ class Menu
   end
 
   def show_objects
-    Station.all
+    puts Station.all
   end
 
   def stop
