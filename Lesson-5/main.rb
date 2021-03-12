@@ -1,12 +1,14 @@
-require_relative 'station.rb'
-require_relative 'route.rb'
-require_relative 'wagon.rb'
-require_relative 'train.rb'
-require_relative 'passenger_train.rb'
-require_relative 'passenger_wagon.rb'
-require_relative 'cargo_train.rb'
-require_relative 'cargo_wagon.rb'
-require_relative 'interface.rb'
+require_relative 'modules'
+require_relative 'station'
+require_relative 'route'
+require_relative 'wagon'
+require_relative 'train'
+require_relative 'passenger_train'
+require_relative 'passenger_wagon'
+require_relative 'cargo_train'
+require_relative 'cargo_wagon'
+require_relative 'interface'
+
 
 class Menu
   attr_accessor :trains, :routes, :stations, :stop
@@ -94,18 +96,25 @@ class Menu
       route_operations
     when 4 
       show_the_list_of_trains_at_the_station
-    else 
+    when 5
+      show_objects
+    when 6
       stop
     end
   end
+  
+  def add_company
+    trains.last.company_name_show
+  end
 
- def create_train
+  def create_train
     puts "Введите номер поезда"
     train_name = gets.chomp
     puts "Выберите тип поезда: 1-cargo, 2-passenger"
     train_type = gets.chomp.to_i
     trains.push CargoTrain.new(train_name) if train_type == 1
     trains.push PassengerTrain.new(train_name) if train_type == 2
+    trains.last.company_add
   end
 
   def create_station
@@ -146,6 +155,7 @@ class Menu
     wagon = CargoWagon.new(CargoWagon::TYPE) if trains[train_number].type == :cargo
     wagon = PassengerWagon.new(PassengerWagon::TYPE) if trains[train_number].type == :passenger
     trains[train_number].add_wagon(wagon)
+    trains[train_number].wagons_list.last.company_add
     puts ADD
     trains.each_with_index {|train, number| p "Текущий список вагонов поезда: #{train.wagons_list}"}
   end
@@ -191,6 +201,10 @@ class Menu
       puts "Список грузовых поездов на станции #{station.cargo_trains.map {|train| train.number}}" if !station.cargo_trains.empty?
       puts "Список пассажирских поездов на станции #{station.passenger_trains.map {|train| train.number}}" if !station.passenger_trains.empty?
     end
+  end
+
+  def show_objects
+    Station.all
   end
 
   def stop

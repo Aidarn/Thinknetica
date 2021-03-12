@@ -1,4 +1,5 @@
 class Train
+  include Company
   attr_reader :number, :type, :number_of_cars, :speed, :current_station, :route, :wagons_list
 
   private
@@ -7,11 +8,11 @@ class Train
 
   public
 
-  def initialize(number, type, speed = 0) 
+  def initialize(number, type) 
     @number = number
     @type = type
     @wagons_list = []
-    @speed = speed
+    @speed = 0
     @current_station_index = 0
   end
 
