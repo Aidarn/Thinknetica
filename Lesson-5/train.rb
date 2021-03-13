@@ -1,5 +1,6 @@
 class Train
   include Company
+  include InstanceCounter
   attr_reader :number, :type, :number_of_cars, :speed, :current_station, :route, :wagons_list
 
   private
@@ -11,6 +12,8 @@ class Train
   @@number = []
 
   def self.find(num)
+    number = @@number.find { |number| number == num }
+    puts "#{number}"
   end
 
   def initialize(number, type) 
@@ -20,6 +23,7 @@ class Train
     @wagons_list = []
     @speed = 0
     @current_station_index = 0
+    register_instance
   end
 
   def add_speed
