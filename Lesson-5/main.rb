@@ -114,9 +114,8 @@ class Menu
     train_type = gets.chomp.to_i
     trains.push CargoTrain.new(train_name) if train_type == 1
     trains.push PassengerTrain.new(train_name) if train_type == 2
-    trains.last.company_add
   end
-
+  
   def create_station
     puts "Введите название станции"
     station_name = gets.chomp
