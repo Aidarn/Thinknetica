@@ -2,15 +2,14 @@ class Train
   include Company
   include InstanceCounter
   attr_reader :number, :type, :number_of_cars, :speed, :current_station, :route, :wagons_list
+  @@number = []
+  NUBER_FORMAT = /^[1-9]{3}$/
 
   private
 
   attr_writer :wagon_list, :current_station, :speed, :route
 
   public
-
-  @@number = []
-
   def self.find(num)
     number = @@number.find { |number| number == num }
     puts "#{number}"
@@ -24,6 +23,7 @@ class Train
     @speed = 0
     @current_station_index = 0
     register_instance
+    validate!
   end
 
   def add_speed
@@ -76,5 +76,13 @@ class Train
       current_station.add_train(self)
       puts "Поезд перенесен на предыдущую станцию"
     end
+  end
+
+  private
+
+  def validate!
+    raise ArgumentError, "Номер должен быть строкой" if number.class != String
+    raise ArgumentError, "Номер должен быть трехзначным" if number !~ NUBER_FORMAT
+    raise StandardError, "Неправильный тип поезда" if (type != :cargo && type != :passenger)
   end
 end

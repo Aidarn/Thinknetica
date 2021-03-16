@@ -1,5 +1,6 @@
 class Route
   include InstanceCounter
+  include Validation
   attr_accessor :first_station, :last_station, :intermediate_stations
 
   def initialize(first_station, last_station)
@@ -7,6 +8,7 @@ class Route
     @last_station = last_station
     @intermediate_stations = []
     register_instance
+    validate!
   end
 
   def add_station(station)
@@ -19,5 +21,12 @@ class Route
 
   def station_list
     [@first_station] + @intermediate_stations + [@last_station]
+  end
+
+  private
+
+  def validate!
+    raise "Не верно указана первая станция" if first_station.class != Station
+    raise "Не верно указана последняя станция" if last_station.class != Station
   end
 end

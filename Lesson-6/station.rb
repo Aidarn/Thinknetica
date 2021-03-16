@@ -1,5 +1,6 @@
 class Station
   include InstanceCounter
+  include Validation
   attr_reader :name, :trains
   attr_writer :name
 
@@ -10,10 +11,13 @@ class Station
   end
 
   def initialize(name)
+    name.downcase!
+    name.capitalize!
     @name = name
     @@stations << self
     @trains = []
     register_instance
+    validate!
   end 
 
   def add_train(train)
@@ -30,5 +34,13 @@ class Station
 
   def passenger_trains
     trains.select { |train| train.type == :passenger }
+  end
+
+  private
+
+  def validate!
+    raise "Название не может быть пустым" if name.nil?
+    raise "Название должно быть строкой" if name.class != String
+    raise "Название должно иметь больше 3 знаков" if name.length < 3
   end
 end

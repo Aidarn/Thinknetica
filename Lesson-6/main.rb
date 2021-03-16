@@ -112,8 +112,12 @@ class Menu
     train_name = gets.chomp
     puts "Выберите тип поезда: 1-cargo, 2-passenger"
     train_type = gets.chomp.to_i
+    raise StandardError, "Выбран неверный тип поезда" if train_type != 1 && train_type != 2
     trains.push CargoTrain.new(train_name) if train_type == 1
     trains.push PassengerTrain.new(train_name) if train_type == 2
+    rescue StandardError => e
+      puts e.message
+      puts "Повторите попытку"
   end
   
   def create_station
@@ -123,13 +127,13 @@ class Menu
   end
   
   def create_route
-    if !stations.empty?
+    if !stations.empty? && (stations.first != stations.last)
       puts "Список станций:"
       stations.each_with_index {|station, index| puts "Номер: #{index}, Название: #{station.name}"} 
       puts "Введите номер начальной станции"
       first_station = gets.chomp.to_i
       puts "Введите номер последней станции"
-      last_station = gets.chomp.to_i
+      last_station = gets.chomp.to_i 
       routes << Route.new(stations[first_station], stations[last_station])
       routes.each_with_index {|route, index| puts "#{route.station_list.map{ |station| station.name }}"}
     else
