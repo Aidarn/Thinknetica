@@ -23,7 +23,7 @@ class Menu
   def run
     loop do
       if @stop == 0
-        puts "Программа завершена"
+        puts PROGRAMM_END
         break
       else
     puts MENU
@@ -108,16 +108,17 @@ class Menu
   end
 
   def create_train
-    puts "Введите номер поезда"
+    puts TRAIN_NUMBER_TYPE
     train_name = gets.chomp
-    puts "Выберите тип поезда: 1-cargo, 2-passenger"
     train_type = gets.chomp.to_i
     raise StandardError, "Выбран неверный тип поезда" if train_type != 1 && train_type != 2
     trains.push CargoTrain.new(train_name) if train_type == 1
     trains.push PassengerTrain.new(train_name) if train_type == 2
+    puts DONE
     rescue StandardError => e
       puts e.message
       puts "Повторите попытку"
+      retry
   end
   
   def create_station
@@ -148,7 +149,7 @@ class Menu
       puts CHOICE
       route_number = gets.chomp.to_i
       trains[train_number].add_route(routes[route_number])
-      puts ADD
+      puts DONE
     else
       puts NO_SUCH_OBJECTS
     end
@@ -159,7 +160,7 @@ class Menu
     wagon = PassengerWagon.new(PassengerWagon::TYPE) if trains[train_number].type == :passenger
     trains[train_number].add_wagon(wagon)
     trains[train_number].wagons_list.last.company_add
-    puts ADD
+    puts DONE
     trains.each_with_index {|train, number| p "Текущий список вагонов поезда: #{train.wagons_list}"}
   end
 
@@ -167,7 +168,7 @@ class Menu
     wagon = CargoWagon.new(CargoWagon::TYPE) if trains[train_number].type == :cargo
     wagon = PassengerWagon.new(PassengerWagon::TYPE) if trains[train_number].type == :passenger
     trains[train_number].remove_wagon(wagon)
-    puts DELETE
+    puts DONE
   end
 
   def move_train_to_next(train_number)
@@ -184,7 +185,7 @@ class Menu
     puts "Введите номер промежуточной станции"
     station_number = gets.chomp.to_i
     routes[route_number].add_station(stations[station_number])
-    puts ADD
+    puts DONE
   end
 
   def delete_station_in_route(route_number)
@@ -195,7 +196,7 @@ class Menu
     station = routes[route_number].station_list[station_number]
     routes[route_number].delete_station(station)
     routes[route_number].station_list.each_with_index {|route, number| puts "Номер: #{number}, Название #{route.name}"}
-    puts DELETE
+    puts DONE
   end
   
   def show_the_list_of_trains_at_the_station

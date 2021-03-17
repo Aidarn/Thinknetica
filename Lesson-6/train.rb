@@ -3,7 +3,7 @@ class Train
   include InstanceCounter
   attr_reader :number, :type, :number_of_cars, :speed, :current_station, :route, :wagons_list
   @@number = []
-  NUBER_FORMAT = /^[1-9]{3}$/
+  NUMBER_FORMAT = /^\w{3}[-]?\w{2}$/
 
   private
 
@@ -82,7 +82,7 @@ class Train
 
   def validate!
     raise ArgumentError, "Номер должен быть строкой" if number.class != String
-    raise ArgumentError, "Номер должен быть трехзначным" if number !~ NUBER_FORMAT
+    raise ArgumentError, "Неправильный формат номера" if number !~ NUMBER_FORMAT
     raise StandardError, "Неправильный тип поезда" if (type != :cargo && type != :passenger)
   end
 end

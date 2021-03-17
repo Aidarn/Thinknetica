@@ -25,3 +25,12 @@ module InstanceCounter
     end
   end
 end
+
+module Validation
+  def valid?
+    validate!
+    true
+  rescue
+    false
+  end
+end
