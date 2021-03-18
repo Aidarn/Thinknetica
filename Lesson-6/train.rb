@@ -22,8 +22,8 @@ class Train
     @wagons_list = []
     @speed = 0
     @current_station_index = 0
-    register_instance
     validate!
+    register_instance
   end
 
   def add_speed

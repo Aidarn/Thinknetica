@@ -111,10 +111,13 @@ class Menu
     puts TRAIN_NUMBER_TYPE
     train_name = gets.chomp
     train_type = gets.chomp.to_i
-    raise StandardError, "Выбран неверный тип поезда" if train_type != 1 && train_type != 2
-    trains.push CargoTrain.new(train_name) if train_type == 1
-    trains.push PassengerTrain.new(train_name) if train_type == 2
-    puts DONE
+    if ( train_type != 1 && train_type != 2 )
+      puts "Неверный тип поезда"
+    else
+      trains.push CargoTrain.new(train_name) if train_type == 1
+      trains.push PassengerTrain.new(train_name) if train_type == 2
+      puts DONE
+    end
     rescue StandardError => e
       puts e.message
       puts "Повторите попытку"
@@ -159,7 +162,6 @@ class Menu
     wagon = CargoWagon.new(CargoWagon::TYPE) if trains[train_number].type == :cargo
     wagon = PassengerWagon.new(PassengerWagon::TYPE) if trains[train_number].type == :passenger
     trains[train_number].add_wagon(wagon)
-    trains[train_number].wagons_list.last.company_add
     puts DONE
     trains.each_with_index {|train, number| p "Текущий список вагонов поезда: #{train.wagons_list}"}
   end
