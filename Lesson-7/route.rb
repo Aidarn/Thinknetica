@@ -7,8 +7,8 @@ class Route
     @first_station = first_station
     @last_station = last_station
     @intermediate_stations = []
+    validate!    
     register_instance
-    validate!
   end
 
   def add_station(station)

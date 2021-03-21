@@ -17,7 +17,7 @@ module Filler
 
     puts "Созданы тестовые станции"
 
-    5.times do
+    6.times do
       first_station = rand(1..9)
       last_station = rand(1..9) if last_station != first_station 
       routes << Route.new(stations[first_station], stations[last_station])
@@ -31,22 +31,30 @@ module Filler
       routes[route_number].add_station(stations[station_number])
     end
 
-    puts "Станции в маршруты добавленны"
+    puts "Станции в маршруты добавлены"
+
+    20.times do
+      train_number = rand(0..4)
+      if trains[train_number].type == :cargo
+        total_volume = rand(1000..9000)
+        wagon = CargoWagon.new(total_volume)
+      elsif trains[train_number].type == :passenger
+        total_seats_number = rand(20..70)
+        wagon = PassengerWagon.new(total_seats_number)
+      end
+      trains[train_number].add_wagon(wagon)
+    end
+
+    puts "Вагоны успешно добавлены"
+    
+    train_number = 0
 
     4.times do
-      train_number = 0
-      route_number = rand(0..10)
+      route_number = rand(0..5)
       trains[train_number].add_route(routes[route_number])
       train_number += 1
     end
 
     puts "Маршруты успешно добавлены"
-
-    10.times do
-      train_number = rand(0..4)
-      wagon = CargoWagon.new(CargoWagon::TYPE) if trains[train_number].type == :cargo
-      wagon = PassengerWagon.new(PassengerWagon::TYPE) if trains[train_number].type == :passenger
-      trains[train_number].add_wagon(wagon)
-    end
   end
 end

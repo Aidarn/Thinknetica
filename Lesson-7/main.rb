@@ -53,7 +53,7 @@ class Menu
   def trains_operation(action)
     if !trains.empty?
       puts CHOICE
-      trains.each_with_index {|train, number| puts "Номер: #{number} Поезд: #{train.number} тип: #{train.type}"}
+      trains.each_with_index {|train, number| puts "Номер:#{number}, Поезд:#{train.number}, Тип:#{train.type}, Кол-во вагонов: #{train.wagons_list.size}"}
       train_number = gets.chomp.to_i
       puts TRAINS_MENU
      action = gets.chomp.to_i
@@ -68,6 +68,8 @@ class Menu
          move_train_to_next(train_number)
       when 5 
         move_train_to_back(train_number)
+      when 6 
+        wagon_operation(train_number)
       end
     else
       puts NO_SUCH_OBJECTS
@@ -99,7 +101,7 @@ class Menu
     when 4 
       show_the_list_of_trains_at_the_station
     when 5
-      show_objects
+      show_the_list_of_wagons_at_the_train
     when 6
       stop
     when 7
@@ -160,17 +162,47 @@ class Menu
   end
 
   def add_wagon_to_train(train_number)
-    wagon = CargoWagon.new(CargoWagon::TYPE) if trains[train_number].type == :cargo
-    wagon = PassengerWagon.new(PassengerWagon::TYPE) if trains[train_number].type == :passenger
+    if trains[train_number].type == :cargo
+      puts "Введите обьем вагона:"
+      total_volume = gets.chomp.to_i
+      wagon = CargoWagon.new(total_volume)
+    elsif trains[train_number].type == :passenger
+      puts "Введите количество мест в вагоне"
+      total_seats_number = gets.chomp.to_i
+      wagon = PassengerWagon.new(total_seats_number)
+    end
     trains[train_number].add_wagon(wagon)
     puts DONE
-    trains.each_with_index {|train, number| p "Текущий список вагонов поезда: #{train.wagons_list}"}
+    trains.each_with_index {|train, number| p "Текущее количество вагонов: #{train.wagons_list.size}"}
   end
 
   def remove_wagon_to_train(train_number)
     wagon = CargoWagon.new(CargoWagon::TYPE) if trains[train_number].type == :cargo
     wagon = PassengerWagon.new(PassengerWagon::TYPE) if trains[train_number].type == :passenger
     trains[train_number].remove_wagon(wagon)
+    puts DONE
+  end
+
+  def wagon_operation(train_number)
+    if trains[train_number].type == :cargo
+      puts CHOICE
+      trains[train_number].wagons_list.each_with_index do |wagon, index| 
+      puts "Номер вагона #{index}"
+      puts "  Объём: #{wagon.total_volume}, Занятый объем #{wagon.occupied_volume}"
+      end
+      wagon_number = gets.chomp.to_i
+      puts "Укажите сколько места хотите занять"
+      fill = gets.chomp.to_i
+      trains[train_number].wagons_list[wagon_number].fill_add(fill)
+    elsif trains[train_number].type == :passenger
+      puts CHOICE
+      trains[train_number].wagons_list.each_with_index do |wagon, index| 
+      puts "Номер вагона #{index}" 
+      puts "  Количество свободных мест: #{wagon.available_seats_number}"
+      end
+      wagon_number = gets.chomp.to_i
+      trains[train_number].wagons_list[wagon_number].take_a_seat
+    end
     puts DONE
   end
 
@@ -204,14 +236,37 @@ class Menu
   
   def show_the_list_of_trains_at_the_station
     stations.each_with_index do |station, index|
-      puts "Назвние станции: #{station.name}"
-      puts "Список грузовых поездов на станции #{station.cargo_trains.map {|train| train.number}}" if !station.cargo_trains.empty?
-      puts "Список пассажирских поездов на станции #{station.passenger_trains.map {|train| train.number}}" if !station.passenger_trains.empty?
+      puts "На станции: #{station.name}"
+      if !station.trains.empty?
+        station.iterate_through_trains do |train, index| 
+          puts "  Название поезда: #{train.number}"
+          puts "    Тип поезда: <<#{train.type}>>"
+          puts "    Количество вагонов: #{train.wagons_list.size}"
+        end
+      else
+        puts "Поезда отсутствуют"
+      end
     end
   end
 
-  def show_objects
-    puts Station.all
+  def show_the_list_of_wagons_at_the_train
+      trains.each_with_index do |train, index|
+        puts "На поезде: #{train.number}"
+        if !train.wagons_list.empty?
+          train.iterate_through_wagons do |wagon, index| 
+            puts "  Номер вагона: #{index}"
+            if train.type == :cargo
+              puts "    Обьем вагона: #{wagon.total_volume}"
+              puts "      Свободно: #{wagon.remaining_volume}, Занято: #{wagon.occupied_volume}" 
+            elsif train.type == :passenger
+              puts "    Обьем вагона: #{wagon.total_seats_number}"
+              puts "      Свободно: #{wagon.available_seats_number}, Занято: #{wagon.occupied_seats_number}" 
+            end
+          end
+        else
+          puts "Вагоны отсутствуют"
+        end
+      end
   end
 
   def stop

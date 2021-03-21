@@ -20,10 +20,10 @@ class PassengerWagon < Wagon
   end
 
   def available_seats_number
-    puts "Свободных мест: #{@available_seats_number}"
+    puts "#{@available_seats_number}"
   end
 
   def occupied_seats_number
-    puts "Занятых мест: #{@occupied_seats_number}"
+    puts "#{@occupied_seats_number}"
   end
 end

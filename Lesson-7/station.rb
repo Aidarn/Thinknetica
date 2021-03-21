@@ -16,8 +16,8 @@ class Station
     @name = name
     @@stations << self
     @trains = []
-    register_instance
     validate!
+    register_instance
   end 
 
   def add_train(train)

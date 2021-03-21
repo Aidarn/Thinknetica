@@ -10,6 +10,7 @@ class Train
   attr_writer :wagon_list, :current_station, :speed, :route
 
   public
+  
   def self.find(num)
     number = @@number.find { |number| number == num }
     puts "#{number}"
@@ -22,8 +23,8 @@ class Train
     @wagons_list = []
     @speed = 0
     @current_station_index = 0
-    register_instance
     validate!
+    register_instance
   end
 
   def add_speed
@@ -43,11 +44,11 @@ class Train
   end
 
   def add_wagon(wagon)
-    wagons_list << wagon if (speed == 0 ) && (wagon.type == type)
+    wagons_list << wagon 
   end
 
   def remove_wagon(wagon)
-    wagons_list.pop if (speed == 0) && (wagon.type == type)
+    wagons_list.pop
   end
 
   def add_route(route)

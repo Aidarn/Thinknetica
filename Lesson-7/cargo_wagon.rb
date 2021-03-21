@@ -18,10 +18,10 @@ class CargoWagon < Wagon
   end
 
   def remaining_volume
-    puts "Осталось места: #{@remaining_volume}" 
+    puts "#{@remaining_volume}" 
   end
 
   def occupied_volume
-    puts "Занято места: #{@occupied_volume}"
+    puts "#{@occupied_volume}"
   end
 end
