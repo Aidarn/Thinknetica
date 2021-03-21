@@ -1,1 +1,0 @@
-require_relative 'Lesson-7/main.rb'
