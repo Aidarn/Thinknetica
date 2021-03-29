@@ -3,10 +3,15 @@
 class Train
   include Company
   include InstanceCounter
+  include Validation
   attr_reader :number, :type, :number_of_cars, :speed, :route, :wagons_list
 
   @numbers = []
   NUMBER_FORMAT = /^\w{3}-?\w{2}$/.freeze
+
+  validate :number, :format, NUMBER_FORMAT
+  validate :number, :type, String
+  validate :number, :presence
 
   private
 
@@ -88,13 +93,5 @@ class Train
 
   def iterate_through_wagons
     yield(wagons_list) if block_given?
-  end
-
-  private
-
-  def validate!
-    raise ArgumentError, 'Номер должен быть строкой' if number.class != String
-    raise ArgumentError, 'Неправильный формат номера' if number !~ NUMBER_FORMAT
-    raise StandardError, 'Неправильный тип поезда' if type != :cargo && type != :passenger
   end
 end
