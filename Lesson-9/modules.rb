@@ -32,11 +32,14 @@ module Validation
   end
 
   module ClassMethods
-    attr_reader :validates
+    attr_accessor :validates
+
+    def validates
+      @validates ||= []
+    end
 
     def validate(attr_name, validation_type, option = nil)
-      @validates ||= []
-      @validates << [validation_type, attr_name, option]
+      validates << [validation_type, attr_name, option]
     end
   end
 
@@ -72,7 +75,7 @@ module Validation
   end
 
   def format_validation(var, _name, option)
-    raise ValidationError, 'Неверный тип' if var.is_a?(option)
+    raise ValidationError, 'Неверный тип' if var.to_s !~ option
   end
 end
 

@@ -7,6 +7,7 @@ class Train
   attr_reader :number, :type, :number_of_cars, :speed, :route, :wagons_list
 
   @numbers = []
+
   NUMBER_FORMAT = /^\w{3}-?\w{2}$/.freeze
 
   validate :number, :format, NUMBER_FORMAT

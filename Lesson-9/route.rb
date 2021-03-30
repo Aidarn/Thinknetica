@@ -5,6 +5,9 @@ class Route
   include Validation
   attr_accessor :first_station, :last_station, :intermediate_stations
 
+  validate :first_station, :type, Station
+  validate :last_station, :type, Station
+
   def initialize(first_station, last_station)
     @first_station = first_station
     @last_station = last_station
